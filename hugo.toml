@@ -2,3 +2,37 @@ baseURL = 'https://example.org/'
 languageCode = 'en-us'
 title = 'Endrol Blog'
 theme = "papermod"
+
+[pagination]
+pagerSize = 5
+
+[params]
+ShowReadingTime = true
+ShowShareButtons = true
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+
+[params.homeInfoParams]
+Title = "Welcome to Endrol Blog"
+Content = "My own."
+
+[[params.socialIcons]]
+name = "twitter"
+url = "https://twitter.com/yourcompany"
+
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/yourcompany"
+
+[[menu.main]]
+identifier = "posts"
+name = "Posts"
+url = "/posts/"
+weight = 20
+
+[[menu.main]]
+identifier = "tags"
+name = "Tags"
+url = "/tags/"
+weight = 30

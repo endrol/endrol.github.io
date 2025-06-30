@@ -1,6 +1,7 @@
 +++
 title = 'Deploy hugo blog on github'
 date = 2023-12-11T11:07:45+09:00
+tags = ["hugo", "github", "deployment", "tutorial"]
 +++
 
 ## Introduction
