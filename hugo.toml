@@ -1,7 +1,7 @@
 baseURL = 'https://example.org/'
 languageCode = 'en-us'
 title = 'Endrol Blog'
-theme = "PaperMod"
+theme = "papermod"
 
 [pagination]
 pagerSize = 5
