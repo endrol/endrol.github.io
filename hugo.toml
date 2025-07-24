@@ -15,15 +15,15 @@ ShowCodeCopyButtons = true
 
 [params.homeInfoParams]
 Title = "Welcome to Endrol Blog"
-Content = "My own."
+Content = "Own blogs for learning"
 
 [[params.socialIcons]]
 name = "twitter"
-url = "https://twitter.com/yourcompany"
+url = "https://x.com/home"
 
 [[params.socialIcons]]
 name = "github"
-url = "https://github.com/yourcompany"
+url = "https://github.com/endrol/endrol.github.io"
 
 [[menu.main]]
 identifier = "posts"
