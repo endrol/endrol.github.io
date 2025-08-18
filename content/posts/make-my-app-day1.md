@@ -11,7 +11,6 @@ tags = ["app", "develop-diary"]
 You know that feeling when you're sitting at home on a weekend, scrolling through your phone, thinking "I should do something today" but having absolutely no idea what? That's me, constantly.
 
 I spend way too much time just... existing. Not really living, just going through the motions. My calendar looks depressingly empty outside of work meetings, and I often catch myself wondering "What do people even DO around here?"
-![A typical empty weekend calendar that illustrates the problem](/images/posts/make-my-app-day1/blog1.png){width=350px}
 
 The worst part? When Sunday evening rolls around and I realize I wasted another weekend doing nothing interesting. I want to explore, meet people, try new things, but the effort of researching and planning always stops me.
 
