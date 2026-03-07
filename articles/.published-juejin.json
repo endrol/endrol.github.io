@@ -1,5 +1,8 @@
 {
-  "make-my-app-day1": "skip",
+  "make-my-app-day1": {
+    "article_id": "7614022331528511530",
+    "published_at": "2026-03-07T08:53:25.365910+00:00"
+  },
   "my-first-post": "skip",
   "python-naming-convention": "skip",
   "diffusion-model-evolve-path": {
