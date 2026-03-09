@@ -60,8 +60,7 @@ Then the automation kicks in:
    - Translates the post to Simplified Chinese
    - Saves a ready-to-publish markdown file in the repo (manual publish later)
 
-<!-- IMAGE: A simple three-stage pipeline diagram (Write → Finalize Images → Distribute to Zenn/Juejin), with small clock icons showing 8:00 and 9:00 -->
-<!-- PROMPT: Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A clean horizontal flow diagram with three rounded boxes labeled “Write (English)”, “Finalize Images (8:00)”, “Distribute (9:00)”. Arrows between boxes. Small cute clock icons above the second and third boxes showing “8:00” and “9:00”. Simple, friendly, tech blog style. -->
+![A simple three-stage pipeline diagram (Write → Finalize Images → Distribute to Zenn/Juejin), with small clock icons showing 8:00 and 9:00](/images/blog-auto-pipeline-openclaw/image-1.png)
 
 The key idea: **the English post is the source of truth**. Everything else is derived from it.
 
@@ -76,10 +75,6 @@ The key idea: **the English post is the source of truth**. Everything else is de
 
 In the draft, I add image notes like this:
 
-```md
-<!-- IMAGE: what the reader should see -->
-<!-- PROMPT: the exact prompt to generate it -->
-```
 
 The post-finalizer job will:
 
@@ -120,8 +115,7 @@ A few things I’m watching during the test:
 - **Idempotency:** every job tracks state with a JSON file so it doesn’t repeat work.
 - **Images across platforms:** Hugo loves `static/`. Other platforms may have their own expectations.
 
-<!-- IMAGE: A sleepy robot holding an alarm clock labeled “8:00”, looking determined but slightly tired -->
-<!-- PROMPT: Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A cute small robot with sleepy eyes holding an alarm clock that reads “8:00”. The robot looks determined but a bit tired. Minimal shading, clean outlines, friendly tech vibe. -->
+![A sleepy robot holding an alarm clock labeled “8:00”, looking determined but slightly tired](/images/blog-auto-pipeline-openclaw/image-2.png)
 
 ---
 
