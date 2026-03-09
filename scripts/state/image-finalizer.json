@@ -1,0 +1,14 @@
+{
+  "posts": {
+    "blog-auto-pipeline-openclaw": {
+      "path": "content/posts/blog-auto-pipeline-openclaw.md",
+      "status": "needs_finalization",
+      "updatedAt": "2026-03-10T00:58:18.333578+09:00",
+      "finalizedAt": null,
+      "images": {
+        "generated": 0
+      },
+      "lastError": null
+    }
+  }
+}
