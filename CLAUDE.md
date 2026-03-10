@@ -79,6 +79,40 @@ This is the **single source of truth** — never copy images elsewhere.
 
 ---
 
+## 🖼️ Image Finalizer State
+
+After creating or updating a blog post that contains `<!-- IMAGE -->` placeholders, **always add or update the post's entry** in `scripts/state/image-finalizer.json`.
+
+This file is the trigger record for the image generation pipeline. If a post is missing from it, images will never be generated.
+
+### Schema:
+```json
+{
+  "posts": {
+    "<slug>": {
+      "path": "content/posts/<slug>.md",
+      "status": "pending",
+      "updatedAt": "<ISO8601 timestamp>",
+      "finalizedAt": null,
+      "images": {
+        "generated": 0
+      },
+      "lastError": null
+    }
+  }
+}
+```
+
+### Rules:
+- **slug** = the filename without `.md` (e.g. `openclaw-diary-6-susan-slack`)
+- **status** = `"pending"` for a new post that needs images generated; `"done"` once all images are in place
+- **updatedAt** = current timestamp in ISO8601 with timezone (e.g. `2026-03-10T00:00:00.000000+09:00`)
+- **finalizedAt** = `null` until the pipeline runs and fills it in
+- **images.generated** = `0` for a new entry; the pipeline updates this after generating
+- Never remove existing entries — only add or update
+
+---
+
 ## 📐 Formatting Rules
 
 - Use headers (`##`, `###`) to break up sections — follow the outline

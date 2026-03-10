@@ -9,6 +9,16 @@
         "generated": 2
       },
       "lastError": null
+    },
+    "openclaw-diary-6-susan-slack": {
+      "path": "content/posts/openclaw-diary-6-susan-slack.md",
+      "status": "pending",
+      "updatedAt": "2026-03-10T00:00:00.000000+09:00",
+      "finalizedAt": null,
+      "images": {
+        "generated": 0
+      },
+      "lastError": null
     }
   }
 }
