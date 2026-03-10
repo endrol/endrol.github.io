@@ -71,7 +71,7 @@ Every image prompt must start with this style preamble:
 Then describe the specific content of the image. Keep it concrete and simple. No photorealism. No gradients. No dark themes.
 
 ### 📁 Image storage
-Generated images live in `static/images/<slug>/image-N.png`. Reference them in all posts (English, Zenn, Juejin) as:
+Generated images live in `images/<slug>/image-N.png`. Reference them in all posts (English, Zenn, Juejin) as:
 ```
 ![description](/images/<slug>/image-N.png)
 ```
