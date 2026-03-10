@@ -50,6 +50,8 @@ is_active = True
 user_list = []
 ```
 
+![](/static/images/blog-auto-pipeline-openclaw/image-1.png)
+
 ## パラメータ
 関数パラメータにはアンダースコア付きの小文字を使用します:
 
