@@ -66,8 +66,7 @@ Scope 设好之后，把应用安装到你的 workspace。Slack 会给你一个 
 
 做完这些，你就有了两个 token 和一个能监听并响应的 bot。OAuth 那部分我参考了[这个 YouTube 教程](https://www.youtube.com/watch?v=9QpSkGnfKMk)，Slack 控制台看起来像迷宫的时候，这个视频很救命。
 
-<!-- IMAGE: A flowchart showing the Slack app setup steps: Create App → Set Scopes → Install to Workspace → Get Bot Token → Get App Token → Enable Socket Mode → Subscribe to Events -->
-<!-- PROMPT: Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A simple vertical flowchart with 7 rounded boxes connected by downward arrows. Labels: "Create App", "Set Scopes", "Install to Workspace", "Bot Token (xoxb-)", "App Token (xapp-)", "Enable Socket Mode", "Subscribe to Events". Each box has a small icon. Clean, no gradients, no dark themes. -->
+![Slack 应用配置步骤流程图](/images/openclaw-diary-6-susan-slack/image-1.png)
 
 ---
 
@@ -92,8 +91,7 @@ OpenClaw 里有一条重要规则：**bot 忽略其他 bot 发出的消息**。S
 
 没有任何限制的话，两个 bot 互相回复对方的消息，会愉快地螺旋进入一段永无止境且毫无用处的对话。两个 bot 不停地互相 @ tag，就是 AI 版的两面镜子相对而立——理论上无限，实际上没有任何意义。
 
-<!-- IMAGE: Two cute robots facing each other, endlessly tagging one another with @ symbols flying between them in a loop. Both look increasingly confused and exhausted. -->
-<!-- PROMPT: Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. Two small robots facing each other with curved arrows looping between them labeled "@Ada" and "@Susan". The arrows form an infinite loop. Both robots have wide, overwhelmed eyes. Small sweat drops. Cute and slightly chaotic energy. No gradients, no dark themes. -->
+![两个机器人面对面无限互相 @ tag 的循环图](/images/openclaw-diary-6-susan-slack/image-2.png)
 
 OpenClaw 通过每个频道的 `allowBots` 配置项来解决这个问题，默认值是 `false`：
 
@@ -130,8 +128,7 @@ Susan: "收到，马上来。"
 
 但这不只是把 `allowBots` 改成 `true` 那么简单。需要完整的交接逻辑、循环防护，以及明确定义 Ada 交出去什么、Susan 接手什么。值得做——只是不是今天。
 
-<!-- IMAGE: A simple flow diagram showing Ada detecting a new post and passing a baton (or flag) to Susan, who then runs the publishing pipeline. Human is nowhere in the diagram. -->
-<!-- PROMPT: Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A horizontal flowchart: robot Ada on the left holding a small flag labeled "new post!", an arrow pointing right to robot Susan holding a checklist, another arrow pointing to a box labeled "pipeline". No human figure. Clean, cheerful, minimal. No gradients, no dark themes. -->
+![Ada 检测到新文章，将接力棒传给 Susan，Susan 启动发布流程](/images/openclaw-diary-6-susan-slack/image-3.png)
 
 ---
 
