@@ -1,0 +1,20 @@
+{
+  "slug": "openclaw-diary-7-script-first",
+  "images": [
+    {
+      "filename": "image-1.png",
+      "description": "The old cron job: LLM reading a wall of shell instructions, looking overwhelmed",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A small robot sitting at a desk, staring at an enormous scroll of text unrolling off the table and onto the floor. The scroll is covered in tiny shell commands and step numbers. The robot has wide, overwhelmed eyes and small sweat drops. Stack of papers labeled 'STEP 1', 'STEP 2', 'STEP 3'... piling up. Cute and slightly chaotic energy. No gradients, no dark themes."
+    },
+    {
+      "filename": "image-2.png",
+      "description": "Script-first design: shell script orchestrates everything, LLM only handles the creative step",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A clean horizontal pipeline diagram: a box labeled 'bash script' on the left with arrows flowing right through boxes labeled 'find slugs', 'read JSON', then a small robot icon labeled 'LLM' only at the 'translate' or 'generate' step, then more boxes 'write file', 'git commit'. The LLM box is smaller and clearly just one step among many. Clean, organized, efficient-looking. No gradients, no dark themes."
+    },
+    {
+      "filename": "image-3.png",
+      "description": "Two agents, Ada and Susan, each reading from a shared common_knowledge file between them",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. Two small robots facing each other with a shared open book or folder floating between them labeled 'common_knowledge'. Left robot labeled 'Ada', right robot labeled 'Susan'. Both robots have one hand pointing to the shared book. Small icons above each robot showing their specialties: Ada has a calendar and envelope, Susan has a pencil and document. Friendly, collaborative energy. No gradients, no dark themes."
+    }
+  ]
+}
