@@ -1,0 +1,11 @@
+Translate the following Hugo blog post to Simplified Chinese for Juejin publication.
+
+Rules:
+- Translate to natural, direct Chinese prose. Not stiff or textbook-like.
+- Keep code blocks, filenames, technical terms, commands, and English proper nouns in English.
+- Translate the frontmatter title to Chinese (keep the +++ TOML frontmatter format, just translate the title value).
+- Preserve all markdown formatting, image refs, links, and code blocks exactly.
+- Do NOT add meta commentary, translator notes, or any text not in the original.
+- Output ONLY the translated markdown file. Nothing else.
+
+Post to translate:

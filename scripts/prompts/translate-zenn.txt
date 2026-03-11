@@ -1,0 +1,16 @@
+Translate the following Hugo blog post to Japanese for Zenn publication.
+
+Rules:
+- Translate to natural, direct Japanese tech-blog style. Not stiff or textbook-like.
+- Preserve code blocks, file paths, filenames, commands, and technical terms in English.
+- Convert the Hugo TOML frontmatter (+++ delimiters) to Zenn YAML frontmatter (--- delimiters):
+    title: <Japanese title>
+    emoji: <one relevant emoji>
+    type: tech
+    topics: [up to 5 lowercase tags]
+    published: true
+- Translate the title to Japanese.
+- Do NOT add meta commentary, translator notes, or any text not in the original.
+- Output ONLY the translated markdown file. Nothing else.
+
+Post to translate:
