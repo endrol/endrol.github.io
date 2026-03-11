@@ -67,8 +67,7 @@ Finally, under **Event Subscriptions**, enable events and subscribe to the ones 
 
 After all that, you have two tokens and a bot that can listen and respond. I followed [this YouTube tutorial](https://www.youtube.com/watch?v=9QpSkGnfKMk) to get through the OAuth setup without losing my mind — worth watching if the Slack dashboard starts looking like a maze.
 
-<!-- IMAGE: A flowchart showing the Slack app setup steps: Create App → Set Scopes → Install to Workspace → Get Bot Token → Get App Token → Enable Socket Mode → Subscribe to Events -->
-<!-- PROMPT: Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A simple vertical flowchart with 7 rounded boxes connected by downward arrows. Labels: "Create App", "Set Scopes", "Install to Workspace", "Bot Token (xoxb-)", "App Token (xapp-)", "Enable Socket Mode", "Subscribe to Events". Each box has a small icon. Clean, no gradients, no dark themes. -->
+![Slack app setup steps flowchart](/images/openclaw-diary-6-susan-slack/image-1.png)
 
 ---
 
@@ -93,8 +92,7 @@ This is intentional, not lazy. The reason is simple: **infinite loops**.
 
 Without some guardrail, two bots replying to each other's messages will happily spiral into a conversation that lasts forever and does absolutely nothing useful. Two bots endlessly tagging each other is the AI equivalent of two mirrors facing each other — technically infinite, entirely pointless.
 
-<!-- IMAGE: Two cute robots facing each other, endlessly tagging one another with @ symbols flying between them in a loop. Both look increasingly confused and exhausted. -->
-<!-- PROMPT: Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. Two small robots facing each other with curved arrows looping between them labeled "@Ada" and "@Susan". The arrows form an infinite loop. Both robots have wide, overwhelmed eyes. Small sweat drops. Cute and slightly chaotic energy. No gradients, no dark themes. -->
+![Two robots endlessly tagging each other in an infinite loop](/images/openclaw-diary-6-susan-slack/image-2.png)
 
 OpenClaw solves this with an `allowBots` setting per channel, which defaults to `false`:
 
@@ -131,8 +129,7 @@ Susan: "On it."
 
 But that requires more than flipping `allowBots`. It needs proper handoff logic, loop prevention, and a clear contract between what Ada hands off and what Susan picks up. Worth doing — just not today.
 
-<!-- IMAGE: A simple flow diagram showing Ada detecting a new post and passing a baton (or flag) to Susan, who then runs the publishing pipeline. Human is nowhere in the diagram. -->
-<!-- PROMPT: Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A horizontal flowchart: robot Ada on the left holding a small flag labeled "new post!", an arrow pointing right to robot Susan holding a checklist, another arrow pointing to a box labeled "pipeline". No human figure. Clean, cheerful, minimal. No gradients, no dark themes. -->
+![Ada handing off a new post to Susan who runs the publishing pipeline](/images/openclaw-diary-6-susan-slack/image-3.png)
 
 ---
 

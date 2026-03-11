@@ -1,0 +1,20 @@
+{
+  "slug": "openclaw-diary-6-susan-slack",
+  "images": [
+    {
+      "filename": "image-1.png",
+      "description": "Slack app setup steps flowchart",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A simple vertical flowchart with 7 rounded boxes connected by downward arrows. Labels: \"Create App\", \"Set Scopes\", \"Install to Workspace\", \"Bot Token (xoxb-)\", \"App Token (xapp-)\", \"Enable Socket Mode\", \"Subscribe to Events\". Each box has a small icon. Clean, no gradients, no dark themes."
+    },
+    {
+      "filename": "image-2.png",
+      "description": "Two robots endlessly tagging each other in an infinite loop",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. Two small robots facing each other with curved arrows looping between them labeled \"@Ada\" and \"@Susan\". The arrows form an infinite loop. Both robots have wide, overwhelmed eyes. Small sweat drops. Cute and slightly chaotic energy. No gradients, no dark themes."
+    },
+    {
+      "filename": "image-3.png",
+      "description": "Ada handing off a new post to Susan who runs the publishing pipeline",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A horizontal flowchart: robot Ada on the left holding a small flag labeled \"new post!\", an arrow pointing right to robot Susan holding a checklist, another arrow pointing to a box labeled \"pipeline\". No human figure. Clean, cheerful, minimal. No gradients, no dark themes."
+    }
+  ]
+}
