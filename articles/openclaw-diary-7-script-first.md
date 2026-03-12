@@ -1,4 +1,3 @@
-```yaml
 ---
 title: OpenClaw日記7：LLMにBashの仕事をさせるな
 emoji: 🛠️
