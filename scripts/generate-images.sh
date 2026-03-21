@@ -95,6 +95,7 @@ for slug in "${SLUGS[@]}"; do
   # Parse the images array from JSON
   count=$(node -e "const d=require('$prompt_file');process.stdout.write(String(d.images.length));")
   generated=0
+  newly_generated=0
   failed=0
   last_error=""
 
@@ -117,6 +118,7 @@ for slug in "${SLUGS[@]}"; do
         --api-key "$GEMINI_API_KEY" 2>&1; then
       echo "  [$filename] ✓ Done ($(du -sh "$outpath" | cut -f1))"
       ((generated++)) || true
+      ((newly_generated++)) || true
     else
       echo "  [$filename] ✗ Failed"
       last_error="generate_image.py failed for $filename"
@@ -125,9 +127,13 @@ for slug in "${SLUGS[@]}"; do
   done
 
   if [[ $failed -eq 0 ]]; then
-    update_state "$slug" "done" "$generated" ""
-    echo "[$slug] ✓ All $generated image(s) ready."
-    ((TOTAL_GENERATED+=generated)) || true
+    if [[ $newly_generated -gt 0 ]]; then
+      update_state "$slug" "done" "$generated" ""
+      echo "[$slug] ✓ $newly_generated new image(s) generated."
+      ((TOTAL_GENERATED+=newly_generated)) || true
+    else
+      echo "[$slug] ✓ All images already exist, nothing to do."
+    fi
   else
     update_state "$slug" "error" "$generated" "$last_error"
     echo "[$slug] ✗ $failed image(s) failed."
