@@ -1,0 +1,20 @@
+{
+  "slug": "reveal-markdown-slides",
+  "images": [
+    {
+      "filename": "image-1.png",
+      "description": "A plain markdown text file on the left transforming into a polished presentation slide on the right",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A simple text editor window on the left showing plain markdown text with hash symbols and dashes, connected by a glowing arrow to a polished dark presentation slide on the right with a title and bullet points. Transformation/magic feeling."
+    },
+    {
+      "filename": "image-2.png",
+      "description": "Three boxes showing the stack: slides.md, Vite server, and browser",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. Three connected boxes in a horizontal pipeline: first box labeled 'slides.md' with a document icon, middle box labeled 'Vite' with a lightning bolt icon, third box labeled 'Browser' showing a small presentation. Arrows connecting each box left to right. Simple and clean tech diagram style."
+    },
+    {
+      "filename": "image-3.png",
+      "description": "A grid showing horizontal and vertical slide navigation in Reveal.js",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A 3x2 grid of small slide rectangles. The top row shows three slides connected by right arrows labeled 'horizontal navigation'. From the first slide in the top row, two more slides hang below connected by down arrows labeled 'vertical navigation'. Each slide rectangle has a simple colored title bar. Clean diagram showing two-dimensional navigation."
+    }
+  ]
+}

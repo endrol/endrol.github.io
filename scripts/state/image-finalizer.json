@@ -30,5 +30,14 @@
       },
       "lastError": null
     }
+  },
+    "reveal-markdown-slides": {
+      "path": "content/posts/reveal-markdown-slides.md",
+      "status": "pending",
+      "updatedAt": "2026-04-03T00:00:00.000000+09:00",
+      "finalizedAt": null,
+      "images": { "generated": 0 },
+      "lastError": null
+    }
   }
 }
