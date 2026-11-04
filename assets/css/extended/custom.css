@@ -1,0 +1,35 @@
+/* Small readability tweaks on top of PaperMod; picked up automatically from assets/css/extended/. */
+
+.post-content {
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.post-content h2 {
+  margin-top: 2.4em;
+  letter-spacing: -0.01em;
+}
+
+.post-content img {
+  border-radius: 10px;
+  margin-inline: auto;
+}
+
+.post-content blockquote {
+  border-inline-start: 3px solid var(--primary);
+  padding: 0.2em 1em;
+  color: var(--primary);
+}
+
+.post-content table {
+  font-size: 0.95em;
+}
+
+.post-content table th {
+  text-align: left;
+}
+
+.post-content table td,
+.post-content table th {
+  padding: 0.5em 0.8em;
+}
