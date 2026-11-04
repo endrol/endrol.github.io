@@ -10,6 +10,7 @@ Rules:
     topics: [up to 5 lowercase tags]
     published: true
 - Translate the title to Japanese.
+- Hugo shortcodes ({{< name >}}) do not work on Zenn. Replace each one with a Zenn note block (:::message ... :::) linking to the English post at https://endrol.github.io/posts/<slug>/ , where <slug> is the post's file name.
 - Do NOT add meta commentary, translator notes, or any text not in the original.
 - Output ONLY the translated markdown file. Nothing else.
 

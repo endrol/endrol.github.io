@@ -1,74 +1,54 @@
 #!/usr/bin/env bash
-# translate-post.sh — Translate a single blog post to Zenn (Japanese) or Juejin (Chinese)
-# Usage: bash scripts/translate-post.sh <slug> <zenn|juejin>
+# translate-post.sh — Translate one blog post to Japanese for Zenn
+# Usage: bash scripts/translate-post.sh <slug> [zenn]
 #
-# Reads:   content/posts/<slug>.md  +  scripts/prompts/translate-<lang>.txt
-# Writes:  articles/<slug>.md  (zenn)  |  juejin/<slug>.md  (juejin)
-# Updates: articles/.published.json   |  juejin/.published-juejin.json
+# Reads:   content/posts/<slug>.md  +  scripts/prompts/translate-zenn.txt
+# Writes:  articles/<slug>.md
+# Updates: articles/.published.json
 
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-if [[ $# -lt 2 ]]; then
-  echo "Usage: $0 <slug> <zenn|juejin>" >&2
+if [[ $# -lt 1 ]]; then
+  echo "Usage: $0 <slug> [zenn]" >&2
   exit 1
 fi
 
 SLUG="$1"
-LANG="$2"
-
-# --- Resolve paths by language ---
-case "$LANG" in
-  zenn)
-    OUTPUT_FILE="$REPO/articles/$SLUG.md"
-    STATE_FILE="$REPO/articles/.published.json"
-    PROMPT_FILE="$REPO/scripts/prompts/translate-zenn.txt"
-    ;;
-  juejin)
-    OUTPUT_FILE="$REPO/juejin/$SLUG.md"
-    STATE_FILE="$REPO/juejin/.published-juejin.json"
-    PROMPT_FILE="$REPO/scripts/prompts/translate-juejin.txt"
-    ;;
-  *)
-    echo "ERROR: lang must be 'zenn' or 'juejin'" >&2
-    exit 1
-    ;;
-esac
+LANG="${2:-zenn}"
+if [[ "$LANG" != "zenn" ]]; then
+  echo "ERROR: only 'zenn' is supported (Juejin was dropped)" >&2
+  exit 1
+fi
 
 SOURCE_FILE="$REPO/content/posts/$SLUG.md"
+OUTPUT_FILE="$REPO/articles/$SLUG.md"
+STATE_FILE="$REPO/articles/.published.json"
+PROMPT_FILE="$REPO/scripts/prompts/translate-zenn.txt"
 
-# --- Validate source exists ---
 if [[ ! -f "$SOURCE_FILE" ]]; then
   echo "ERROR: Source post not found: $SOURCE_FILE" >&2
   exit 1
 fi
 
-# --- Check if already translated ---
+# Already translated if the file exists and the state has a non-empty entry for it.
 if [[ -f "$OUTPUT_FILE" ]]; then
-  # Check state
   existing=$(python3 -c "
-import json, sys
+import json
 try:
-    d = json.load(open('$STATE_FILE'))
-    v = d.get('$SLUG', '')
-    # Not translated if missing or empty
-    if not v:
-        print('missing')
-    else:
-        print('exists')
-except:
+    print('exists' if json.load(open('$STATE_FILE')).get('$SLUG') else 'missing')
+except Exception:
     print('missing')
-" 2>/dev/null)
+")
   if [[ "$existing" == "exists" ]]; then
-    echo "[$SLUG/$LANG] Already translated, skipping."
+    echo "[$SLUG] Already translated, skipping."
     exit 0
   fi
 fi
 
-echo "[$SLUG/$LANG] Translating..."
+echo "[$SLUG] Translating..."
 
-# --- Call Claude for translation ---
 prompt="$(cat "$PROMPT_FILE")"
 translated=$(cat "$SOURCE_FILE" | claude --print --dangerously-skip-permissions \
   --model claude-haiku-4-5 "$prompt")
@@ -78,31 +58,22 @@ if [[ -z "$translated" ]]; then
   exit 1
 fi
 
-# --- Write output ---
 mkdir -p "$(dirname "$OUTPUT_FILE")"
 echo "$translated" > "$OUTPUT_FILE"
-echo "[$SLUG/$LANG] ✓ Written to $(basename "$OUTPUT_FILE")"
+echo "[$SLUG] Written to articles/$SLUG.md"
 
-# --- Update state ---
 now="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-python3 - "$SLUG" "$LANG" "$now" "$STATE_FILE" << 'PYEOF'
+python3 - "$SLUG" "$now" "$STATE_FILE" << 'PYEOF'
 import json, sys
-slug, lang, now, state_file = sys.argv[1:]
-
+slug, now, state_file = sys.argv[1:]
 try:
     with open(state_file) as f:
         state = json.load(f)
 except (FileNotFoundError, json.JSONDecodeError):
     state = {}
-
-if lang == "zenn":
-    state[slug] = now
-elif lang == "juejin":
-    state[slug] = "translated"
-
+state[slug] = now
 with open(state_file, "w") as f:
     json.dump(state, f, indent=2)
     f.write("\n")
-
-print(f"  State updated: {slug} -> {state[slug]}")
+print(f"  State updated: {slug} -> {now}")
 PYEOF

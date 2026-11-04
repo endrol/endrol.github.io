@@ -6,13 +6,12 @@
 #
 # Reads:  scripts/state/image-prompts/<slug>.json
 # Writes: images/<slug>/<filename>
-# Updates: scripts/state/image-finalizer.json (status -> done/error)
+# Runs only on the Linux blog server: the generator and the Gemini key live under /home/daming/.openclaw.
 
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROMPTS_DIR="$REPO/scripts/state/image-prompts"
-STATE_FILE="$REPO/scripts/state/image-finalizer.json"
 GENERATE_PY="/home/daming/.openclaw/workspace-blog-writer/skills/nano-banana-2-new/scripts/generate_image.py"
 
 # --- Get API key from OpenClaw config ---
@@ -44,38 +43,6 @@ if [[ ${#SLUGS[@]} -eq 0 ]]; then
   echo "No prompt files found in $PROMPTS_DIR"
   exit 0
 fi
-
-# --- Helper: update status in image-finalizer.json ---
-update_state() {
-  local slug="$1" status="$2" generated="$3" error="$4"
-  local now
-  now="$(date +"%Y-%m-%dT%H:%M:%S+09:00")"
-
-  python3 - "$slug" "$status" "$generated" "$error" "$now" "$STATE_FILE" << 'PYEOF'
-import json, sys
-slug, status, generated, error, now, state_file = sys.argv[1:]
-generated = int(generated)
-
-try:
-    with open(state_file) as f:
-        state = json.load(f)
-except FileNotFoundError:
-    state = {"posts": {}}
-
-existing = state["posts"].get(slug, {"path": f"content/posts/{slug}.md", "updatedAt": now})
-state["posts"][slug] = {
-    **existing,
-    "status": status,
-    "finalizedAt": now if status == "done" else None,
-    "images": {"generated": generated},
-    "lastError": error if error else None,
-}
-
-with open(state_file, "w") as f:
-    json.dump(state, f, indent=2)
-    f.write("\n")
-PYEOF
-}
 
 # --- Main loop ---
 TOTAL_GENERATED=0
@@ -128,15 +95,13 @@ for slug in "${SLUGS[@]}"; do
 
   if [[ $failed -eq 0 ]]; then
     if [[ $newly_generated -gt 0 ]]; then
-      update_state "$slug" "done" "$generated" ""
       echo "[$slug] ✓ $newly_generated new image(s) generated."
       ((TOTAL_GENERATED+=newly_generated)) || true
     else
       echo "[$slug] ✓ All images already exist, nothing to do."
     fi
   else
-    update_state "$slug" "error" "$generated" "$last_error"
-    echo "[$slug] ✗ $failed image(s) failed."
+    echo "[$slug] ✗ $failed image(s) failed: $last_error"
     ((ERRORS++)) || true
   fi
 done

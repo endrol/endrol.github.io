@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # run-translations.sh — Find and translate all untranslated posts
-# Usage: bash scripts/run-translations.sh <zenn|juejin|both>
+# Usage: bash scripts/run-translations.sh [zenn]
 #
 # Finds posts with no entry in the state JSON and translates them one by one.
 # Exits non-zero if any translation fails.
@@ -10,7 +10,7 @@ set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 POSTS_DIR="$REPO/content/posts"
 
-LANG="${1:-both}"
+LANG="${1:-zenn}"
 
 translate_lang() {
   local lang="$1"
@@ -18,7 +18,6 @@ translate_lang() {
 
   case "$lang" in
     zenn)    state_file="$REPO/articles/.published.json" ;;
-    juejin)  state_file="$REPO/juejin/.published-juejin.json" ;;
     *)       echo "ERROR: unknown lang $lang" >&2; exit 1 ;;
   esac
 
@@ -63,15 +62,12 @@ PYEOF
 }
 
 case "$LANG" in
-  both)
+  # "both" is still accepted so old callers keep working; Juejin is dropped, so it means Zenn only.
+  zenn|both)
     translate_lang zenn
-    translate_lang juejin
-    ;;
-  zenn|juejin)
-    translate_lang "$LANG"
     ;;
   *)
-    echo "Usage: $0 <zenn|juejin|both>" >&2
+    echo "Usage: $0 [zenn]" >&2
     exit 1
     ;;
 esac

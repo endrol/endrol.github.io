@@ -1,139 +1,40 @@
-# CLAUDE.md — Blog Writing Instructions
+# CLAUDE.md — Endrol Blog
 
-This is the standard guide for writing and translating all blog posts across Zenn, Juejin, and any future platforms. Follow it every time.
+A Hugo site (theme: PaperMod, git submodule in `themes/papermod`) published to GitHub Pages, plus Japanese translations for Zenn.
 
----
+## Where things go
 
-## ✍️ Voice & Tone
+| What | Where |
+| --- | --- |
+| English post (the original) | `content/posts/<slug>.md`, TOML front matter: `title`, `date`, `tags` |
+| Japanese translation for Zenn | `articles/<slug>.md`, Zenn YAML front matter (`title`, `emoji`, `type: tech`, `topics`, `published`) |
+| Images | `images/<slug>/image-N.png`, referenced as `/images/<slug>/image-N.png` (`static/images` is a symlink to it) |
+| Diagrams and interactive demos | Hugo shortcodes in `layouts/shortcodes/<name>.html`, used as `{{< name >}}` |
+| Site-wide style tweaks | `assets/css/extended/*.css` (PaperMod loads them after its own CSS) |
 
-- **Precise** — say exactly what you mean. No vague hand-waving.
-- **Easy to understand** — write like you're explaining to a smart friend, not a textbook reader. If a simpler word works, use it.
-- **Funny** — light humor is welcome. A well-placed joke, a relatable analogy, a self-aware comment. Don't force it, but don't be a robot either.
-- Write like a professional who actually enjoys what they're writing about.
-- Avoid over-explaining basics, but don't assume deep expertise.
+`juejin/` holds old Chinese translations. Juejin is no longer published: don't add to it.
 
----
+## Writing
 
-## 🗺️ Structure: Outline First
+Write the way a good, careful writer would: the way Claude writes when it's at its best.
 
-Before writing the body, **always define the outline**. The outline is the skeleton — writing happens inside it.
+- **Lead with the point.** The first paragraph says what the post is about and why it matters. No warm-up.
+- **Clear and direct.** Plain words, concrete claims, real numbers. Cut anything that doesn't earn its place.
+- **Natural voice.** Write like a person explaining something they understand and care about. Humour is fine when it comes naturally.
+- **Structure for scanning.** Descriptive headings, short paragraphs, lists only for things that really are lists, code blocks for code, commands and paths.
+- **Show, don't describe.** One good diagram, table or demo beats three paragraphs. Every visual has to explain something.
+- **Check every fact** against the source (code, logs, docs) before stating it.
 
-### Outline format:
-```
-## Outline
-1. What problem are we solving? (hook + context)
-2. The key idea / concept
-3. How it works (the meat)
-4. Real example or demo
-5. Gotchas / things to watch out for
-6. Wrap-up
-```
+## Design
 
-Adjust sections to fit the topic, but **follow the outline during writing** — don't drift.
+- Prefer clean typography and whitespace over decoration. No emoji headings.
+- For architecture and flows, build an inline SVG or an interactive shortcode that works in light and dark mode (use PaperMod's CSS variables: `--primary`, `--secondary`, `--entry`, `--border`, `--code-bg`).
+- Shortcode output is raw HTML/JS on the Hugo site only. Zenn can't run it, so the Zenn version replaces each shortcode with a `:::message` note linking to the English post.
+- Images are optional, and only when they add something a diagram can't. If generated, `scripts/generate-images.sh [slug]` reads `scripts/state/image-prompts/<slug>.json` and writes missing files at 1K resolution. It only runs on the Linux blog server (generator and Gemini key under `/home/daming/.openclaw`).
 
----
+## Publishing
 
-## 🖼️ Images
-
-When a concept is hard to visualize, or when a picture would make it funnier or clearer — **add an image**.
-
-### In the post (English, Zenn, Juejin — all platforms):
-Put the image reference directly in the markdown. No placeholder comments.
-```
-![description of what the image shows](/images/<slug>/image-N.png)
-```
-
-### When to add images:
-- Complex architecture or flow diagrams
-- Before/after comparisons
-- Funny or relatable moments (the classic "this is fine" situation)
-- Anything where a visual would cut 200 words of explanation
-
-### ⚠️ Don't over-image. One good image beats five mediocre ones.
-
-### 📐 Image size
-Always generate at **1K resolution** (`--resolution 1K`). Keep files lean — no one needs a 4K illustration of a middleware diagram.
-
----
-
-## 🎨 Image Prompt Style (Consistent Across All Posts)
-
-Every image prompt must start with this style preamble:
-
-> **Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette.**
-
-Then describe the specific content of the image. Keep it concrete and simple. No photorealism. No gradients. No dark themes.
-
-### 📁 Image storage
-Generated images live in `images/<slug>/image-N.png`. Referenced in all posts (English, Zenn, Juejin) as:
-```
-![description](/images/<slug>/image-N.png)
-```
-This is the **single source of truth** — never copy images elsewhere.
-
----
-
-## 🖼️ Image Pipeline
-
-Images are generated by a script — **not by LLM at runtime**. When writing a post that needs images:
-
-### Step 1 — Add image refs directly to all posts
-Put `![desc](/images/<slug>/image-N.png)` in the English post, Zenn translation, and Juejin translation.
-The image file doesn't need to exist yet — it will be generated before publish.
-
-### Step 2 — Create the prompt metadata file
-Create `scripts/state/image-prompts/<slug>.json`:
-```json
-{
-  "slug": "<slug>",
-  "images": [
-    {
-      "filename": "image-1.png",
-      "description": "What this image shows",
-      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. <specific content>"
-    }
-  ]
-}
-```
-Number images sequentially: `image-1.png`, `image-2.png`, etc.
-
-### Step 3 — Update image-finalizer.json
-Add or update the slug entry in `scripts/state/image-finalizer.json`:
-```json
-{
-  "posts": {
-    "<slug>": {
-      "path": "content/posts/<slug>.md",
-      "status": "pending",
-      "updatedAt": "<ISO8601 timestamp>",
-      "finalizedAt": null,
-      "images": { "generated": 0 },
-      "lastError": null
-    }
-  }
-}
-```
-- **status** = `"pending"` when images need generating; `"done"` once all images are in place
-- The script updates status automatically — never edit it manually after that
-- Never remove existing entries
-
-### Step 4 — Images are generated automatically
-The daily `post-finalizer` cron runs `scripts/generate-images.sh`, which:
-- Reads `scripts/state/image-prompts/<slug>.json` for each pending slug
-- Skips images that already exist on disk
-- Generates missing ones via the Gemini API
-- Updates `image-finalizer.json` status to `done` or `error`
-
-To generate manually: `bash scripts/generate-images.sh [slug]`
----
-
-## 📐 Formatting Rules
-
-- Use headers (`##`, `###`) to break up sections — follow the outline
-- Use bullet points for lists, not walls of text
-- Use **bold** for key terms on first use
-- Use code blocks for all code, commands, and file paths
-- Keep paragraphs short — 3-4 sentences max
-- One idea per paragraph
-
-
+1. Write the post in `content/posts/<slug>.md`.
+2. Preview: `git submodule update --init` once, then `hugo server` → http://localhost:1313/.
+3. Zenn: `bash scripts/translate-post.sh <slug>` writes `articles/<slug>.md` (rules in `scripts/prompts/translate-zenn.txt`) and records it in `articles/.published.json`. `bash scripts/run-translations.sh` does that for every post missing from that file; `bash scripts/zenn-publish.sh` just lists them. Review the result, and replace any shortcodes as above.
+4. Commit and push only when LUO asks. Pushing to `main` deploys the site (`.github/workflows/hugo.yaml`) and publishes Zenn articles from `articles/`.

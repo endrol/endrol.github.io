@@ -3,7 +3,7 @@
 # Checks for untranslated Hugo posts and prints their slugs + content for the agent to translate.
 # Usage: bash scripts/zenn-publish.sh [slug]  (no slug = list unpublished)
 
-REPO="/home/daming/workspace/blogs/endrol.github.io"
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 POSTS_DIR="$REPO/content/posts"
 ARTICLES_DIR="$REPO/articles"
 PUBLISHED_FILE="$ARTICLES_DIR/.published.json"
