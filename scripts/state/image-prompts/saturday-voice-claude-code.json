@@ -1,0 +1,15 @@
+{
+  "slug": "saturday-voice-claude-code",
+  "images": [
+    {
+      "filename": "image-1.png",
+      "description": "A developer leaning back with hands behind their head, talking to a glowing orb while a small robot works at the laptop",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A relaxed developer leaning back in a desk chair with hands behind their head, a small speech bubble coming from their mouth. Next to the desk floats a softly glowing round orb made of tiny dots, with a matching speech bubble. At the laptop on the desk, a small friendly robot types on the keyboard. Calm, slightly funny mood: the human is doing nothing with their hands while work gets done."
+    },
+    {
+      "filename": "image-2.png",
+      "description": "An orb talking into a speaker while the microphone next to it picks up the same words, in an infinite loop",
+      "prompt": "Flat design, minimalist illustration, soft pastel colors, clean lines, white background, warm color palette. A small glowing dot-orb character speaking, its sound waves coming out of a laptop speaker, curving around and flowing straight back into a microphone right next to it, forming a circular loop arrow. The orb looks mildly confused, as if it is answering itself. Simple, humorous diagram of an audio echo loop."
+    }
+  ]
+}

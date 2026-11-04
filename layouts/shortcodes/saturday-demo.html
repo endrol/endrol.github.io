@@ -1,0 +1,446 @@
+<div class="sd" id="sd" tabindex="-1">
+<style>
+.sd { --bg: #0d1114; --panel: #141a1f; --line: #24303a; --fg: #dfe5e9; --muted: #7d8b95; --dim: #56606a;
+  --user: #5ec8e5; --think: #9b8cd9; --say: #f2b35b; --work: #7cc49a; --ask: #ef8a80;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  margin: 2em 0; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 14px;
+  font: 14px/1.55 var(--sans); overflow: hidden; outline: none; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+.sd * { box-sizing: border-box; }
+.sd-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.sd-dots { display: flex; gap: 6px; }
+.sd-dots i { width: 10px; height: 10px; border-radius: 50%; background: #2b3640; display: block; }
+.sd-brand { font: 500 12px var(--mono); letter-spacing: .28em; color: var(--say); }
+.sd-brand span { letter-spacing: 0; color: var(--muted); margin-left: 8px; }
+.sd-body { display: grid; grid-template-columns: 250px 1fr; min-height: 300px; }
+.sd-stage { position: relative; border-right: 1px solid var(--line); display: grid; grid-template-rows: 1fr auto; padding: 10px; }
+.sd-orb { width: 100%; height: 220px; display: block; }
+.sd-status { font: 12px var(--mono); text-align: center; color: var(--muted); min-height: 2.6em; transition: color .3s; }
+.sd-chat { height: 300px; overflow-y: auto; padding: 12px 16px; display: flex; flex-direction: column; gap: 6px; scroll-behavior: smooth; }
+.sd-empty { margin: auto; color: var(--muted); text-align: center; max-width: 34ch; font-size: 13px; }
+.sd-msg { display: grid; grid-template-columns: 40px 1fr; gap: 4px; animation: sd-in .25s ease-out; }
+.sd-who { font: 500 11.5px/1.9 var(--mono); }
+.sd-msg.luo .sd-who { color: var(--user); }
+.sd-msg.sat .sd-who { color: var(--say); }
+.sd-msg.aside { opacity: .55; }
+.sd-msg.aside .sd-txt { font-style: italic; }
+.sd-txt { min-width: 0; overflow-wrap: anywhere; }
+.sd-msg.cut .sd-txt::after { content: " —"; color: var(--ask); }
+.sd-note { font: 11.5px/1.5 var(--mono); color: var(--dim); padding-left: 44px; animation: sd-in .25s ease-out; }
+.sd-note.step { color: var(--think); opacity: .85; }
+.sd-note.hot { color: var(--ask); }
+.sd-pipe { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px; border-top: 1px solid var(--line); align-items: center; }
+.sd-pipe span { font: 11px var(--mono); padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--dim); transition: all .25s; }
+.sd-pipe span.on { color: var(--bg); background: var(--c, var(--fg)); border-color: var(--c, var(--fg)); }
+.sd-pipe b { font-weight: 400; color: var(--dim); font: 11px var(--mono); }
+.sd-tasks { border-top: 1px solid var(--line); padding: 8px 14px; display: grid; gap: 4px; }
+.sd-tasks[hidden], .sd-confirm[hidden] { display: none; }
+.sd-task { display: grid; grid-template-columns: 26px 62px 78px 1fr; gap: 8px; font: 12px var(--mono); align-items: baseline; }
+.sd-task .k { color: var(--dim); }
+.sd-task .m { color: var(--think); }
+.sd-task .p { color: var(--work); }
+.sd-task .s { color: var(--fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sd-task.wait .s { color: var(--ask); }
+.sd-confirm { margin: 0 14px 12px; border: 1px solid var(--ask); border-radius: 10px; padding: 10px 12px; background: rgba(239,138,128,.06); animation: sd-in .25s ease-out; }
+.sd-confirm .h { font-weight: 600; }
+.sd-confirm .w { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.sd-code { font: 12px/1.6 var(--mono); white-space: pre; overflow-x: auto; margin: 8px 0; padding: 8px 10px; background: var(--panel); border-radius: 8px; }
+.sd-code .d { color: var(--ask); } .sd-code .a { color: var(--work); } .sd-code .c { color: var(--dim); }
+.sd-keys { display: flex; flex-wrap: wrap; gap: 6px; }
+.sd button { font: 500 13px var(--sans); color: var(--fg); background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 14px; cursor: pointer; transition: border-color .2s, color .2s, background .2s; margin: 0; line-height: 1.4; }
+.sd button:hover { border-color: var(--say); color: var(--say); }
+.sd button:focus-visible { outline: 2px solid var(--say); outline-offset: 2px; }
+.sd button kbd { font: 11px var(--mono); border: 1px solid currentColor; border-radius: 4px; padding: 0 4px; margin-right: 5px; background: none; box-shadow: none; color: inherit; }
+.sd-keys .yes { border-color: var(--work); color: var(--work); }
+.sd-keys .no { border-color: var(--ask); color: var(--ask); }
+.sd-keys .talk { border-style: dashed; color: var(--muted); }
+.sd-controls { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); align-items: center; }
+.sd-controls .sp { flex: 1; }
+.sd-controls button.run { border-color: var(--say); color: var(--say); }
+.sd-sound[aria-pressed="true"] { background: var(--say); color: var(--bg); border-color: var(--say); }
+@keyframes sd-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (max-width: 640px) {
+  .sd-body { grid-template-columns: 1fr; }
+  .sd-stage { border-right: 0; border-bottom: 1px solid var(--line); }
+  .sd-orb { height: 170px; }
+  .sd-chat { height: 280px; }
+  .sd-task { grid-template-columns: 26px 56px 1fr; }
+  .sd-task .p { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .sd *, .sd-chat { animation: none !important; scroll-behavior: auto; } }
+</style>
+  <div class="sd-top">
+    <div class="sd-dots"><i></i><i></i><i></i></div>
+    <div class="sd-brand">SATURDAY<span>scripted demo · timings from the real logs</span></div>
+    <button class="sd-sound" type="button" aria-pressed="false" title="Read the lines aloud with your browser's voice">sound off</button>
+  </div>
+  <div class="sd-body">
+    <div class="sd-stage">
+      <canvas class="sd-orb" aria-hidden="true"></canvas>
+      <div class="sd-status">○ standby · listening on the Mac for “Saturday”</div>
+    </div>
+    <div class="sd-chat" aria-live="polite">
+      <div class="sd-empty">Pick a scenario below. The orb is cyan when LUO talks, violet while Claude thinks, amber when she speaks.</div>
+    </div>
+  </div>
+  <div class="sd-pipe" aria-label="which part of Saturday is working">
+    <span data-p="wake" style="--c: var(--user)">wake word</span><b>›</b>
+    <span data-p="ears" style="--c: var(--user)">ears</span><b>›</b>
+    <span data-p="brain" style="--c: var(--think)">brain</span><b>›</b>
+    <span data-p="work" style="--c: var(--work)">work_in › worker</span><b>›</b>
+    <span data-p="screen" style="--c: var(--ask)">screen</span><b>›</b>
+    <span data-p="mouth" style="--c: var(--say)">mouth</span>
+  </div>
+  <div class="sd-tasks" hidden></div>
+  <div class="sd-confirm" hidden>
+    <div class="h">Kaka's worker wants to run a command: commit the goal change</div>
+    <div class="w">for your request: “make the default daily goal 2,000 calories”</div>
+    <div class="sd-code"><span class="c">Models/Goal.swift</span>
+<span class="d">-    static let defaultDailyKcal = 1800</span>
+<span class="a">+    static let defaultDailyKcal = 2000</span>
+<span class="c">$</span> git commit -am "default daily goal to 2000 kcal"</div>
+    <div class="sd-keys">
+      <button type="button" class="yes" data-k="y"><kbd>y</kbd>allow</button>
+      <button type="button" class="yes" data-k="a"><kbd>a</kbd>always</button>
+      <button type="button" class="no" data-k="n"><kbd>n</kbd>no</button>
+      <button type="button" class="talk" data-k="say">say “yeah, go ahead”</button>
+    </div>
+  </div>
+  <div class="sd-controls">
+    <button type="button" class="run" data-s="ask">1 · Ask a question</button>
+    <button type="button" class="run" data-s="work">2 · Hand off a change</button>
+    <button type="button" class="run" data-s="barge">3 · Talk over her</button>
+    <span class="sp"></span>
+    <button type="button" class="sd-reset">reset</button>
+  </div>
+<script>
+(function () {
+  var root = document.getElementById("sd");
+  if (!root) return;
+  var $ = function (s) { return root.querySelector(s); };
+  var chat = $(".sd-chat"), statusEl = $(".sd-status"), tasksEl = $(".sd-tasks"), confirmEl = $(".sd-confirm");
+  var canvas = $(".sd-orb"), g = canvas.getContext("2d");
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var RGB = { idle: [86, 96, 106], listen: [70, 140, 160], user: [94, 200, 229], think: [155, 140, 217], say: [242, 179, 91] };
+  var STATUS = {
+    idle: ["○ standby · listening on the Mac for “Saturday”", "#7d8b95"],
+    listen: ["● listening", "#5ec8e5"],
+    user: ["● hearing LUO · streamed to the ears", "#5ec8e5"],
+    think: ["◐ thinking · Claude (Sonnet)", "#9b8cd9"],
+    say: ["● speaking · word for word", "#f2b35b"]
+  };
+  var state = "idle", talking = false;
+  function setState(s, text) {
+    state = s;
+    statusEl.textContent = text || STATUS[s][0];
+    statusEl.style.color = STATUS[s][1];
+  }
+  function pipe(on) {
+    root.querySelectorAll(".sd-pipe span").forEach(function (el) { el.classList.toggle("on", on.indexOf(el.dataset.p) >= 0); });
+  }
+
+  // --- the script runner: each scenario gets a token, and a newer scenario cancels the old one
+  var run = 0, STOP = {}, pendingKey = null;
+  function ctxFor(my) {
+    return {
+      wait: function (ms) {
+        return new Promise(function (res) { setTimeout(res, ms); }).then(function () { if (my !== run) throw STOP; });
+      },
+      alive: function () { return my === run; }
+    };
+  }
+  function scroll() { chat.scrollTop = chat.scrollHeight; }
+  function clearEmpty() { var e = chat.querySelector(".sd-empty"); if (e) e.remove(); }
+  function bubble(who, cls) {
+    clearEmpty();
+    var m = document.createElement("div");
+    m.className = "sd-msg " + who + (cls ? " " + cls : "");
+    m.innerHTML = '<span class="sd-who">' + (who === "luo" ? "LUO" : "SAT") + '</span><span class="sd-txt"></span>';
+    chat.appendChild(m); scroll();
+    return m;
+  }
+  function note(text, cls) {
+    clearEmpty();
+    var n = document.createElement("div");
+    n.className = "sd-note" + (cls ? " " + cls : "");
+    n.textContent = "⋯ " + text;
+    chat.appendChild(n); scroll();
+  }
+
+  // --- optional sound: browser speech for the lines, a small chime on wake
+  var sound = false, voices = { sat: null, luo: null }, actx = null;
+  function pickVoices() {
+    if (!window.speechSynthesis) return;
+    var all = speechSynthesis.getVoices().filter(function (v) { return /^en/i.test(v.lang); });
+    function find(names) {
+      for (var i = 0; i < names.length; i++) {
+        for (var j = 0; j < all.length; j++) if (all[j].name.indexOf(names[i]) >= 0) return all[j];
+      }
+      return null;
+    }
+    voices.sat = find(["Samantha", "Ava", "Allison", "Karen", "Moira", "Aria", "Jenny", "Google US English", "Zira"]) || all[0] || null;
+    voices.luo = find(["Daniel", "Alex", "Rishi", "Fred", "Guy", "Google UK English Male", "David"]) || all[1] || voices.sat;
+  }
+  if (window.speechSynthesis) { pickVoices(); speechSynthesis.onvoiceschanged = pickVoices; }
+  function speak(text, who) {
+    if (!sound || !window.speechSynthesis) return null;
+    return new Promise(function (res) {
+      var u = new SpeechSynthesisUtterance(text);
+      var v = voices[who]; if (v) u.voice = v;
+      u.rate = who === "sat" ? 1.05 : 1.0; u.pitch = who === "sat" ? 1.15 : 0.9;
+      u.onend = u.onerror = function () { res(); };
+      speechSynthesis.speak(u);
+    });
+  }
+  function chime() {
+    if (!sound) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      var t = actx.currentTime;
+      [880, 1318.5].forEach(function (f, i) {
+        var o = actx.createOscillator(), gn = actx.createGain();
+        o.frequency.value = f; gn.gain.setValueAtTime(0, t + i * 0.12);
+        gn.gain.linearRampToValueAtTime(0.12, t + i * 0.12 + 0.02);
+        gn.gain.exponentialRampToValueAtTime(0.0001, t + i * 0.12 + 0.8);
+        o.connect(gn).connect(actx.destination); o.start(t + i * 0.12); o.stop(t + i * 0.12 + 0.9);
+      });
+    } catch (e) { /* no audio: the demo still runs silently */ }
+  }
+
+  // A line appears word by word, the way the live transcript and the reading feel.
+  // `hooks[i]` runs after word i (for talking over her); returning true cuts her off.
+  function line(c, who, text, opts) {
+    opts = opts || {};
+    var m = bubble(who, opts.cls), el = m.querySelector(".sd-txt");
+    var words = text.split(" "), per = opts.per || (who === "luo" ? 270 : 240);
+    var spoken = opts.silent ? null : speak(text, who);
+    if (!opts.keepState) setState(who === "luo" ? "user" : "say");
+    talking = true;
+    var i = 0;
+    function next() {
+      if (i >= words.length) {
+        talking = false;
+        return spoken ? Promise.race([spoken, c.wait(6000)]).then(function () { if (!c.alive()) throw STOP; return m; }) : m;
+      }
+      el.textContent = words.slice(0, i + 1).join(" ");
+      scroll();
+      var k = i++;
+      return c.wait(per).then(function () {
+        var h = opts.hooks && opts.hooks[k];
+        return h ? h(m) : false;
+      }).then(function (cut) {
+        if (cut) { talking = false; m.classList.add("cut"); if (window.speechSynthesis) speechSynthesis.cancel(); return m; }
+        return next();
+      });
+    }
+    return next();
+  }
+
+  function task(step, waiting) {
+    tasksEl.hidden = false;
+    tasksEl.innerHTML = '<div class="sd-task' + (waiting ? " wait" : "") + '"><span class="k">w1</span><span class="m">Sonnet</span>' +
+      '<span class="p">kaka_app</span><span class="s"></span></div>';
+    tasksEl.querySelector(".s").textContent = step;
+  }
+  function askKey() {
+    confirmEl.hidden = false;
+    return new Promise(function (res) { pendingKey = res; });
+  }
+  function answerKey(k) { if (pendingKey) { var r = pendingKey; pendingKey = null; r(k); } }
+  confirmEl.querySelectorAll("button").forEach(function (b) {
+    b.addEventListener("click", function () { answerKey(b.dataset.k); });
+  });
+  root.addEventListener("keydown", function (e) {
+    if (pendingKey && /^[yan]$/i.test(e.key)) { e.preventDefault(); answerKey(e.key.toLowerCase()); }
+  });
+
+  function reset() {
+    run++;
+    answerKey(null);
+    if (window.speechSynthesis) speechSynthesis.cancel();
+    talking = false;
+    chat.innerHTML = "";
+    tasksEl.hidden = true; tasksEl.innerHTML = "";
+    confirmEl.hidden = true;
+    pipe([]); setState("idle");
+  }
+  function wake(c) {
+    pipe(["wake"]); chime();
+    note("wake word heard on the Mac (local Whisper, ~190 ms) · the whole sentence comes along");
+    return c.wait(500).then(function () { pipe(["ears"]); });
+  }
+
+  var SCENES = {
+    ask: function (c) {
+      return c.wait(400).then(function () { return wake(c); })
+        .then(function () { return line(c, "luo", "Hey Saturday, where are we on the roadmap?"); })
+        .then(function () { setState("think"); note("1 s pause → end of sentence · text ready +1.2 s"); return c.wait(800); })
+        .then(function () { pipe(["brain"]); note("Read ROADMAP.md", "step"); return c.wait(1700); })
+        .then(function () { pipe(["mouth"]); note("Claude still busy at 2.5 s → a short filler"); return line(c, "sat", "Let me check."); })
+        .then(function () { setState("think"); pipe(["brain"]); return c.wait(400); })
+        .then(function () { pipe(["mouth"]); return line(c, "sat", "Phase 2 is done; next up is connecting remote servers."); })
+        .then(function () { note("Claude 2.7 s · the whole exchange ≈ $0.002"); setState("listen"); pipe([]); return c.wait(1800); })
+        .then(function () { note("10 s with nobody talking and no task running → standby"); setState("idle"); });
+    },
+
+    work: function (c) {
+      var firstKey = null;
+      function decide() {
+        var waiting = firstKey || askKey();
+        firstKey = null;
+        return waiting.then(function (k) {
+          if (!c.alive() || k === null) throw STOP;
+          if (k === "say") {
+            return line(c, "luo", "Yeah, go ahead.")
+              .then(function () { note("voice never answers a confirmation: a misheard “yes” costs too much", "hot"); pipe(["mouth"]); return c.wait(500); })
+              .then(function () { return line(c, "sat", "Kaka's worker wants to commit the goal change. Press Y to allow it or N to say no."); })
+              .then(function () { setState("listen"); pipe(["screen"]); return decide(); });
+          }
+          confirmEl.hidden = true;
+          if (k === "n") {
+            task("declined · finishing what it can", false);
+            return c.wait(900).then(function () {
+              tasksEl.hidden = true; pipe(["brain"]); note("result → main conversation");
+              return c.wait(600);
+            }).then(function () { pipe(["mouth"]); return line(c, "sat", "Okay, I didn't commit; the change is made and tested, just not committed."); });
+          }
+          if (k === "a") note("saved as a rule in Kaka's local settings · it won't ask about this again");
+          task("Bash git commit -am \"default daily goal to 2000 kcal\"");
+          pipe(["work"]);
+          return c.wait(1200).then(function () {
+            tasksEl.hidden = true; pipe(["brain"]); note("task completed · result → main conversation, which speaks up on its own");
+            return c.wait(900);
+          }).then(function () { pipe(["mouth"]); return line(c, "sat", "Done: Kaka's daily goal now defaults to 2,000 calories, the tests pass, and it's committed."); });
+        });
+      }
+      return c.wait(400).then(function () { return wake(c); })
+        .then(function () { return line(c, "luo", "Saturday, in Kaka, make the default daily goal 2,000 calories."); })
+        .then(function () { setState("think"); note("1 s pause → end of sentence"); return c.wait(700); })
+        .then(function () { pipe(["brain"]); note("work_in(project=\"kaka_app\", depth=\"quick\")", "step"); return c.wait(1100); })
+        .then(function () { pipe(["work", "mouth"]); task("starting…"); return line(c, "sat", "On it; Kaka's worker has started."); })
+        .then(function () { setState("listen", "● listening · 1 task running in the background"); pipe(["work"]); task("Grep defaultDailyKcal"); return c.wait(1000); })
+        .then(function () { task("Read Models/Goal.swift"); return c.wait(1000); })
+        .then(function () { task("Edit Models/Goal.swift · auto mode let it through"); return c.wait(1300); })
+        .then(function () { task("Bash xcodebuild test · passed"); return c.wait(1300); })
+        .then(function () {
+          task("waiting for you", true); pipe(["screen", "mouth"]);
+          note("Claude Code asks → can_use_tool → the prompt goes on screen", "hot");
+          // The keys work as soon as the prompt is on screen, even while she is still announcing it.
+          firstKey = askKey();
+          return line(c, "sat", "A background task needs your OK on screen to run a command: commit the goal change.");
+        })
+        .then(function () { setState("listen", "● waiting for a key: y · a · n"); pipe(["screen"]); root.focus({ preventScroll: true }); return decide(); })
+        .then(function () { setState("listen"); pipe([]); return c.wait(1500); })
+        .then(function () { setState("idle"); });
+    },
+
+    barge: function (c) {
+      var hooks = {};
+      hooks[8] = function () {
+        bubble("luo", "aside").querySelector(".sd-txt").textContent = "mm-hm, okay…";
+        note("talked over her without her name → held back, never sent to be transcribed");
+        return false;
+      };
+      hooks[22] = function () {
+        bubble("luo").querySelector(".sd-txt").textContent = "Saturday, stop.";
+        return true;
+      };
+      return c.wait(400).then(function () { return wake(c); })
+        .then(function () { return line(c, "luo", "Saturday, what changed in the audio code today?"); })
+        .then(function () { setState("think"); pipe(["brain"]); note("Bash git log --since=midnight -- src/saturday", "step"); return c.wait(1400); })
+        .then(function () { note("Read research/LOG.md", "step"); return c.wait(1100); })
+        .then(function () { pipe(["mouth"]); return line(c, "sat", "One sec."); })
+        .then(function () { setState("think"); pipe(["brain"]); return c.wait(500); })
+        .then(function () {
+          pipe(["mouth"]);
+          return line(c, "sat", "Three things: audio now follows the Mac when AirPods connect, the helper rebuilds its whole audio graph after a device change, and every reading is tagged so one can't leak into the next.", { hooks: hooks });
+        })
+        .then(function () {
+          setState("user"); pipe(["wake"]);
+          note("local wake-word check hears “Saturday” → she stops mid-sentence", "hot");
+          return c.wait(1200);
+        })
+        .then(function () { note("“Saturday” alone means stop; anything after it would be a new question"); setState("listen"); pipe([]); return c.wait(1500); })
+        .then(function () { setState("idle"); });
+    }
+  };
+
+  root.querySelectorAll(".sd-controls .run").forEach(function (b) {
+    b.addEventListener("click", function () {
+      reset();
+      var c = ctxFor(run);
+      SCENES[b.dataset.s](c).catch(function (e) { if (e !== STOP) throw e; });
+    });
+  });
+  $(".sd-reset").addEventListener("click", function () {
+    reset();
+    chat.innerHTML = '<div class="sd-empty">Pick a scenario below. The orb is cyan when LUO talks, violet while Claude thinks, amber when she speaks.</div>';
+  });
+  var soundBtn = $(".sd-sound");
+  if (!window.speechSynthesis) soundBtn.title = "Your browser has no speech synthesis; the demo runs silently";
+  soundBtn.addEventListener("click", function () {
+    sound = !sound;
+    soundBtn.setAttribute("aria-pressed", String(sound));
+    soundBtn.textContent = sound ? "sound on" : "sound off";
+    if (!sound && window.speechSynthesis) speechSynthesis.cancel();
+  });
+
+  // --- the orb: a Fibonacci sphere of dots that swells with whoever is talking
+  var N = 520, base = [], cur = RGB.idle.slice(), shown = 0, visible = true, dpr = 1, W = 0, H = 0;
+  for (var i = 0; i < N; i++) {
+    var y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = i * Math.PI * (3 - Math.sqrt(5));
+    base.push([Math.cos(th) * r, y, Math.sin(th) * r]);
+  }
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+  }
+  resize();
+  window.addEventListener("resize", resize);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) {
+      var was = visible; visible = es[0].isIntersecting;
+      if (visible && !was) requestAnimationFrame(frame);
+    }).observe(root);
+  }
+  function frame(ms) {
+    if (!visible) return;
+    var t = ms / 1000, level;
+    if ((state === "user" || state === "say") && talking) level = 0.35 + 0.3 * Math.abs(Math.sin(t * 9)) * (0.6 + 0.4 * Math.sin(t * 2.3));
+    else if (state === "think") level = 0.26 + 0.1 * Math.sin(t * 3);
+    else if (state === "listen") level = 0.08;
+    else level = 0.03;
+    shown = level > shown ? shown * 0.6 + level * 0.4 : shown * 0.92 + level * 0.08;
+    var tgt = RGB[state];
+    for (var k = 0; k < 3; k++) cur[k] += (tgt[k] - cur[k]) * 0.06;
+    var col = Math.round(cur[0]) + "," + Math.round(cur[1]) + "," + Math.round(cur[2]);
+
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.clearRect(0, 0, W, H);
+    var cx = W / 2, cy = H / 2, R = Math.min(W, H) * 0.3;
+    var glow = g.createRadialGradient(cx, cy, 0, cx, cy, R * (1.6 + shown));
+    glow.addColorStop(0, "rgba(" + col + "," + (0.18 + shown * 0.3) + ")");
+    glow.addColorStop(1, "rgba(" + col + ",0)");
+    g.fillStyle = glow; g.fillRect(0, 0, W, H);
+
+    var spin = reduce ? 0.6 : t * 0.35, tilt = reduce ? 0.3 : 0.3 + Math.sin(t * 0.2) * 0.12;
+    var cs = Math.cos(spin), sn = Math.sin(spin), ct = Math.cos(tilt), st = Math.sin(tilt), amp = 0.04 + shown * 0.34;
+    for (var j = 0; j < N; j++) {
+      var p = base[j], x = p[0], y2 = p[1], z = p[2];
+      var wave = Math.sin(x * 3.1 + t * 1.7) * Math.cos(y2 * 2.7 - t * 1.3) * Math.sin(z * 2.3 + t);
+      var rr = 1 + wave * amp;
+      var x1 = x * cs - z * sn, z1 = x * sn + z * cs;
+      var y1 = y2 * ct - z1 * st, z2 = y2 * st + z1 * ct;
+      var depth = (z2 + 1) / 2, s = 3.2 / (3.2 - z2);
+      var px = cx + x1 * rr * R * s, py = cy + y1 * rr * R * s, size = 0.6 + depth * 1.5;
+      g.fillStyle = "rgba(" + col + "," + (0.15 + depth * 0.85) + ")";
+      g.fillRect(px - size / 2, py - size / 2, size, size);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</div>

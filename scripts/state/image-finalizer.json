@@ -39,6 +39,16 @@
         "generated": 3
       },
       "lastError": null
+    },
+    "saturday-voice-claude-code": {
+      "path": "content/posts/saturday-voice-claude-code.md",
+      "status": "pending",
+      "updatedAt": "2026-11-04T00:00:00.000000+09:00",
+      "finalizedAt": null,
+      "images": {
+        "generated": 0
+      },
+      "lastError": null
     }
   }
 }

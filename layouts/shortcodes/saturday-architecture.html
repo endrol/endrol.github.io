@@ -1,0 +1,136 @@
+<figure class="sa-arch" id="sa-arch">
+<style>
+.sa-arch { margin: 2em 0; --sa-user: #5ec8e5; --sa-think: #9b8cd9; --sa-say: #f2b35b; --sa-work: #7cc49a; --sa-ask: #ef8a80; }
+.sa-arch svg { width: 100%; height: auto; display: block; overflow: visible; }
+.sa-arch .sa-box { fill: var(--entry, #fff); stroke: var(--border, #e3e3e3); stroke-width: 1.2; }
+.sa-arch .sa-node { cursor: pointer; outline: none; }
+.sa-arch .sa-node:hover .sa-box, .sa-arch .sa-node:focus .sa-box, .sa-arch .sa-node.on .sa-box { stroke: var(--primary, #1f2328); stroke-width: 1.6; }
+.sa-arch .sa-t { fill: var(--primary, #1f2328); font: 600 14px/1 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.sa-arch .sa-s { fill: var(--secondary, #6b7280); font: 11.5px/1 ui-monospace, Menlo, monospace; }
+.sa-arch .sa-l { fill: var(--secondary, #6b7280); font: italic 11.5px/1 system-ui, sans-serif; }
+.sa-arch .sa-p { fill: none; stroke: var(--border, #d9d9d9); stroke-width: 2; }
+.sa-arch .sa-p.dash { stroke-dasharray: 5 5; }
+.sa-arch .sa-chip { fill: var(--code-bg, #f5f5f5); stroke: var(--border, #e3e3e3); }
+.sa-arch .sa-info { margin-top: .6em; min-height: 4.2em; padding: .7em 1em; border-radius: 10px; background: var(--code-bg, #f5f5f5);
+  color: var(--content, #333); font-size: .9em; line-height: 1.55; border-left: 4px solid var(--sa-c, var(--border, #ddd)); transition: border-color .3s; }
+.sa-arch .sa-info b { color: var(--primary, #1f2328); }
+.sa-arch figcaption { text-align: center; color: var(--secondary, #6b7280); font-size: .85em; margin-top: .4em; }
+@media (prefers-reduced-motion: reduce) { .sa-arch .sa-dot { display: none; } }
+</style>
+<svg viewBox="0 0 800 440" role="img" aria-label="Saturday's architecture: LUO's voice goes through a local wake word and gpt-live-transcribe to the main Claude Code session; its one-sentence answer is read aloud by gpt-realtime-2.1-mini. Changes go through the work_in tool to workers inside each project, whose permission questions appear on screen.">
+  <defs>
+    <marker id="sa-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--border, #cfcfcf)"/>
+    </marker>
+  </defs>
+
+  <!-- paths (drawn first so boxes sit on top) -->
+  <path id="sa-p1" class="sa-p" d="M118,150 C140,100 150,82 170,82" marker-end="url(#sa-ah)"/>
+  <path id="sa-p2" class="sa-p" d="M320,82 L358,82" marker-end="url(#sa-ah)"/>
+  <path id="sa-p3" class="sa-p" d="M530,82 L630,82 Q660,82 660,108" marker-end="url(#sa-ah)"/>
+  <path id="sa-p4" class="sa-p" d="M660,242 Q660,268 630,268 L532,268" marker-end="url(#sa-ah)"/>
+  <path id="sa-p5" class="sa-p" d="M360,268 L200,268 Q140,268 116,212" marker-end="url(#sa-ah)"/>
+  <path id="sa-p6" class="sa-p" d="M690,242 L690,328" marker-end="url(#sa-ah)"/>
+  <path id="sa-p7" class="sa-p dash" d="M745,328 L745,242" marker-end="url(#sa-ah)"/>
+  <path id="sa-p8" class="sa-p" d="M430,372 L342,372" marker-end="url(#sa-ah)"/>
+  <path id="sa-p9" class="sa-p dash" d="M150,372 Q84,372 78,226" marker-end="url(#sa-ah)"/>
+
+  <text class="sa-l" x="560" y="72">text</text>
+  <text class="sa-l" x="545" y="290">one sentence</text>
+  <text class="sa-l" x="230" y="290">her voice</text>
+  <text class="sa-l" x="626" y="300">work_in</text>
+  <text class="sa-l" x="752" y="300">report</text>
+  <text class="sa-l" x="386" y="362" text-anchor="middle">can_use_tool</text>
+  <text class="sa-l" x="52" y="326" transform="rotate(-66 52 326)">y / a / n</text>
+
+  <!-- moving packets -->
+  <g class="sa-dots">
+    <circle class="sa-dot" r="5" fill="var(--sa-user)"><animateMotion dur="5s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.16;1" calcMode="linear"><mpath href="#sa-p1"/></animateMotion></circle>
+    <circle class="sa-dot" r="5" fill="var(--sa-user)" opacity="0"><animateMotion dur="5s" begin="0s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.16;0.24;1" calcMode="linear"><mpath href="#sa-p2"/></animateMotion><animate attributeName="opacity" dur="5s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.16;0.24;0.25;1"/></circle>
+    <circle class="sa-dot" r="5" fill="var(--sa-think)" opacity="0"><animateMotion dur="5s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.24;0.42;1" calcMode="linear"><mpath href="#sa-p3"/></animateMotion><animate attributeName="opacity" dur="5s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.24;0.42;0.43;1"/></circle>
+    <circle class="sa-dot" r="5" fill="var(--sa-say)" opacity="0"><animateMotion dur="5s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.58;0.72;1" calcMode="linear"><mpath href="#sa-p4"/></animateMotion><animate attributeName="opacity" dur="5s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.58;0.72;0.73;1"/></circle>
+    <circle class="sa-dot" r="5" fill="var(--sa-say)" opacity="0"><animateMotion dur="5s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.73;0.92;1" calcMode="linear"><mpath href="#sa-p5"/></animateMotion><animate attributeName="opacity" dur="5s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.73;0.92;0.93;1"/></circle>
+    <circle class="sa-dot" r="4.5" fill="var(--sa-work)"><animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.2;1" calcMode="linear"><mpath href="#sa-p6"/></animateMotion></circle>
+    <circle class="sa-dot" r="4.5" fill="var(--sa-ask)" opacity="0"><animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.35;0.47;1" calcMode="linear"><mpath href="#sa-p8"/></animateMotion><animate attributeName="opacity" dur="7s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.35;0.47;0.48;1"/></circle>
+    <circle class="sa-dot" r="4.5" fill="var(--sa-ask)" opacity="0"><animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.48;0.62;1" calcMode="linear"><mpath href="#sa-p9"/></animateMotion><animate attributeName="opacity" dur="7s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.48;0.62;0.63;1"/></circle>
+    <circle class="sa-dot" r="4.5" fill="var(--sa-work)" opacity="0"><animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;0;1;1" keyTimes="0;0.75;0.92;1" calcMode="linear"><mpath href="#sa-p7"/></animateMotion><animate attributeName="opacity" dur="7s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;0.75;0.92;0.93;1"/></circle>
+  </g>
+
+  <!-- nodes -->
+  <g class="sa-node" tabindex="0" data-c="var(--sa-user)" data-info="<b>LUO</b> talks; hands stay on whatever they were doing. Over the MacBook speakers, macOS voice processing (the FaceTime echo canceller) removes Saturday's own voice: 30–43 dB once it has adapted.">
+    <circle class="sa-box" cx="80" cy="180" r="46"/>
+    <circle cx="80" cy="180" r="46" fill="none" stroke="var(--sa-user)" stroke-width="3" stroke-dasharray="6 220" stroke-linecap="round"/>
+    <text class="sa-t" x="80" y="178" text-anchor="middle">LUO</text>
+    <text class="sa-s" x="80" y="196" text-anchor="middle">mic · speaker</text>
+  </g>
+
+  <g class="sa-node" tabindex="0" data-c="var(--sa-user)" data-info="<b>Wake word.</b> “Saturday” or “Hey Saturday” is recognised on the Mac by Whisper small (MLX): 14/14 test clips, ~190 ms. In standby nothing leaves the Mac, so nothing is billed. While she talks, it is also the only word that interrupts her.">
+    <rect class="sa-box" x="170" y="50" width="150" height="64" rx="12"/>
+    <rect x="170" y="50" width="6" height="64" rx="3" fill="var(--sa-user)"/>
+    <text class="sa-t" x="186" y="76">Wake word</text>
+    <text class="sa-s" x="186" y="96">local Whisper</text>
+  </g>
+
+  <g class="sa-node" tabindex="0" data-c="var(--sa-user)" data-info="<b>Ears: gpt-live-transcribe.</b> Audio is streamed while LUO is still talking and billed on audio sent. A local VAD calls the end of a sentence after a 1 s pause; the text is ready about 1.2 s after he stops.">
+    <rect class="sa-box" x="360" y="50" width="170" height="64" rx="12"/>
+    <rect x="360" y="50" width="6" height="64" rx="3" fill="var(--sa-user)"/>
+    <text class="sa-t" x="376" y="76">Ears</text>
+    <text class="sa-s" x="376" y="96">gpt-live-transcribe</text>
+  </g>
+
+  <g class="sa-node" tabindex="0" data-c="var(--sa-think)" data-info="<b>Brain: the main Claude Code session.</b> One warm session through the Agent SDK, on the Claude subscription, sitting at ~/workspace with Sonnet at low effort. It reads any project and answers in one sentence. It cannot change anything: Edit/Write are disallowed and its shell runs in Claude Code's sandbox.">
+    <rect class="sa-box" x="570" y="108" width="210" height="134" rx="14"/>
+    <rect x="570" y="108" width="210" height="8" rx="4" fill="var(--sa-think)"/>
+    <text class="sa-t" x="590" y="144">Brain</text>
+    <text class="sa-s" x="590" y="166">main Claude Code</text>
+    <text class="sa-s" x="590" y="184">cwd ~/workspace</text>
+    <text class="sa-s" x="590" y="202">Sonnet · low effort</text>
+    <text class="sa-s" x="590" y="220">reads, never writes</text>
+  </g>
+
+  <g class="sa-node" tabindex="0" data-c="var(--sa-say)" data-info="<b>Mouth: gpt-realtime-2.1-mini.</b> Reads Claude's sentence word for word, about $0.002 a reply. It never answers on its own and never adds a detail Claude didn't say. If Claude takes longer than 2.5 s, she says “Let me check” first.">
+    <rect class="sa-box" x="360" y="236" width="170" height="64" rx="12"/>
+    <rect x="360" y="236" width="6" height="64" rx="3" fill="var(--sa-say)"/>
+    <text class="sa-t" x="376" y="262">Mouth</text>
+    <text class="sa-s" x="376" y="282">gpt-realtime-2.1-mini</text>
+  </g>
+
+  <g class="sa-node" tabindex="0" data-c="var(--sa-work)" data-info="<b>Workers.</b> work_in hands a change or heavy job to a Claude Code session started inside that project, so its CLAUDE.md, permission rules and hooks apply as in LUO's terminal. Sonnet for quick, Opus for deep; one worker per project, tasks queued, session resumed across restarts. The result goes back to the brain, which says it.">
+    <rect class="sa-box" x="430" y="328" width="360" height="92" rx="14"/>
+    <rect x="430" y="328" width="360" height="8" rx="4" fill="var(--sa-work)"/>
+    <text class="sa-t" x="448" y="360">Workers</text>
+    <text class="sa-s" x="530" y="360">one Claude Code per project</text>
+    <rect class="sa-chip" x="448" y="374" width="96" height="30" rx="8"/><text class="sa-s" x="496" y="393" text-anchor="middle">kaka_app</text>
+    <rect class="sa-chip" x="556" y="374" width="96" height="30" rx="8"/><text class="sa-s" x="604" y="393" text-anchor="middle">Saturday</text>
+    <rect class="sa-chip" x="664" y="374" width="110" height="30" rx="8"/><text class="sa-s" x="719" y="393" text-anchor="middle">blog …</text>
+  </g>
+
+  <g class="sa-node" tabindex="0" data-c="var(--sa-ask)" data-info="<b>Screen.</b> Workers run in auto mode, so most actions just happen. Whatever Claude Code still wants to ask about arrives through can_use_tool, is written in plain words with the diff or command underneath, and waits for a key: y / a / n. Saying “yes” doesn't count.">
+    <rect class="sa-box" x="150" y="336" width="190" height="72" rx="12"/>
+    <rect x="150" y="336" width="6" height="72" rx="3" fill="var(--sa-ask)"/>
+    <text class="sa-t" x="166" y="362">Screen</text>
+    <text class="sa-s" x="166" y="382">permission prompt</text>
+    <text class="sa-s" x="166" y="398">press y · a · n</text>
+  </g>
+</svg>
+<div class="sa-info" aria-live="polite">Hover or tap a box. <b>Cyan</b> is LUO's voice going in, <b>violet</b> is Claude thinking, <b>amber</b> is her voice coming out, <b>green</b> is work handed to a project, <b>red</b> is a permission question.</div>
+<figcaption>Saturday: Claude Code with ears and a mouth. The voice layer never thinks.</figcaption>
+<script>
+(function () {
+  var root = document.getElementById("sa-arch");
+  if (!root) return;
+  var info = root.querySelector(".sa-info");
+  var nodes = root.querySelectorAll(".sa-node");
+  function show(n) {
+    nodes.forEach(function (m) { m.classList.toggle("on", m === n); });
+    info.innerHTML = n.getAttribute("data-info");
+    info.style.setProperty("--sa-c", n.getAttribute("data-c"));
+  }
+  nodes.forEach(function (n) {
+    n.addEventListener("mouseenter", function () { show(n); });
+    n.addEventListener("focus", function () { show(n); });
+    n.addEventListener("click", function () { show(n); });
+  });
+})();
+</script>
+</figure>
