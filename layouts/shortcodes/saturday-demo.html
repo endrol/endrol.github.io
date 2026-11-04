@@ -71,7 +71,7 @@
 </style>
   <div class="sd-top">
     <div class="sd-dots"><i></i><i></i><i></i></div>
-    <div class="sd-brand">SATURDAY<span>scripted demo · timings from the real logs</span></div>
+    <div class="sd-brand">SATURDAY<span>scripted demo · behaviour from the real code</span></div>
     <button class="sd-sound" type="button" aria-pressed="false" title="Read the lines aloud with your browser's voice">sound off</button>
   </div>
   <div class="sd-body">
@@ -275,7 +275,7 @@
     ask: function (c) {
       return c.wait(400).then(function () { return wake(c); })
         .then(function () { return line(c, "luo", "Hey Saturday, where are we on the roadmap?"); })
-        .then(function () { setState("think"); note("1 s pause → end of sentence · text ready +1.2 s"); return c.wait(800); })
+        .then(function () { setState("think"); note("1 s pause → end of sentence · text ready ~1.6 s after LUO stops"); return c.wait(800); })
         .then(function () { pipe(["brain"]); note("Read ROADMAP.md", "step"); return c.wait(1700); })
         .then(function () { pipe(["mouth"]); note("Claude still busy at 2.5 s → a short filler"); return line(c, "sat", "Let me check."); })
         .then(function () { setState("think"); pipe(["brain"]); return c.wait(400); })
